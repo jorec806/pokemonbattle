@@ -1,0 +1,158 @@
+.main_container {
+    height: 600px;
+    width: 600px;
+    background-image: url(image/backg.jpeg);
+    background-size: cover;
+}
+
+.text {
+    padding: 0px 40px 0px 40px;
+    margin: 0px;
+    color: aliceblue;
+    text-shadow: 0 0 3px #000000;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.opponent_main {
+    height: 300px;
+    width: 600px;
+    display: flex;
+}
+
+.opponent_info, .player_info {
+    width: 300px;
+    height: 70px;
+    margin-top: 30px;
+}
+
+.opponent_name, .player_name{
+    width: 300px;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.opponent_life, .player_life {
+    width: 300px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.opponent_hpbar, .player_hpbar{
+    width: 220px;
+    height: 20px;
+    margin: 0px;
+    padding: 0px;
+    border: solid gray 2px;
+    border-radius: 5px;
+}
+
+.opponent_hp, .player_hp{
+    width: 100%;
+    height: 100%;
+    background-color: #4AFF14;
+    transition: width 2s;
+
+}
+
+.opponent_img {
+    padding: 0px;
+    margin: 0px;
+    height: 300px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.opponent_pkmn {
+    height: 80px;
+    width: 80px;
+    background-image: url(image/voltorb.gif);
+    background-size: 80px;
+    background-repeat: no-repeat;
+}
+
+.opponent_data {
+    padding: 0px;
+    margin: 0px;
+    height: 300px;
+    width: 300px;
+}
+
+.player_main {
+    height: 300px;
+    width: 600px;
+    display: flex;
+}
+
+.player_img {
+    padding: 0px;
+    margin: 0px;
+    height: 300px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player_data{
+    padding-top: 70px;
+}
+
+.player_pkmn {
+    padding: 0px;
+    margin: 0px;
+    height: 300px;
+    width: 300px;
+    background-image: url(image/charizard.gif);
+    background-size: 300px;
+    background-repeat: no-repeat;
+}
+
+.player_moves{
+    width: 300px;
+    height: 120px;
+    display: flex; /* luego se cambia a Flex*/
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.player_script{
+    width: 270px;
+    height: 100px;
+    background-color: #726FB4;
+    border-radius: 5px;
+    padding: 10px;
+    display: none; /* Luego cambia a none*/
+}
+
+.texto_caja{
+    padding: 0px;
+    margin: 0px;
+    color: aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.move {
+    width: 120px;
+    height: 40px;
+    background-color: #726FB4;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.move:hover {
+    box-shadow: 2px 2px 2px 2px #5d5a92;
+}
