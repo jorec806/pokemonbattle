@@ -1,6 +1,6 @@
 /*DAMAGE FORMULA
 
-([(2*Level/5)+2]*Move BP* A/D)/50 + 2
+([(2*Level/5)+2] * Move BP * A/D)/50 + 2
 
 example:
 
@@ -21,7 +21,7 @@ Damage Formula =([(2* 40 /5)+2]* 95* 120/57)/50 + 2
                = (18*95*2.1)/50 + 2
                = 73.82
 */
-
+const resultados = document.getElementById('resultados');
 class pokemon {
     constructor(name,type,hp,atk,def,speed,){
         this.name = name;
@@ -35,17 +35,26 @@ class pokemon {
     }
     attackFoe(foe,move){
         //Damage Formula
-        console.log(`${this.name} attacked ${foe.name}`);
+        let parrafo = document.createElement("p")
+        let paragraph = document.createElement("p")
+        paragraph.innerHTML= `${this.name} attacked ${foe.name}`;
+        paragraph.style.backgroundColor='rgba(220, 20, 60, 0.425)'
         let dmgFormula = Math.floor(([(2* 40 /5)+2]* move* this.atk/foe.def)/50 + 2);
-        console.log(`Damage cause by this move : ${dmgFormula}`);
+        parrafo.innerHTML=`Damage cause by this move : ${dmgFormula}`;
+        resultados.appendChild(paragraph);
+        resultados.appendChild(parrafo);
 
         //Update new HP to opponent pokemon
         foe.hpReal = foe.hpReal - dmgFormula;
-        console.log(`HP remaining: ${foe.hpReal}/${foe.hp}`);
+        let HP = document.createElement('p');
+        HP.innerHTML = `HP remaining: ${foe.hpReal}/${foe.hp}`;
+        resultados.appendChild(HP);
 
         //Update new hp Bar in percentage
         let percentDmg = Math.floor(dmgFormula * 100 / foe.hp);
-        console.log(`${foe.name} lost ${percentDmg}% of its total health`);
+        let newHPbar = document.createElement('p');
+        newHPbar.innerHTML = `${foe.name} lost ${percentDmg}% of its total health`;
+        resultados.appendChild(newHPbar)
 
         foe.hpBar = foe.hpBar - percentDmg;
         if(foe.hpBar>0){
@@ -68,7 +77,7 @@ const newHpBar = function(pkmn){
     }else if(pkmn.name == 'Charizard'){
         playerHpBar.style.width = tempString;
     }else{
-        console.log('hay un error ptm');
+        console.error('hay un error ptm');
     }
 }
 
@@ -80,7 +89,7 @@ const batalla = function(){
 
 
 const charizard = new pokemon('Charizard','Fire',150,100,70,120);
-const voltorb = new pokemon('Voltorb','Electric',105,60,57,140);
+const voltorb = new pokemon('Voltorb','Electric',150,60,57,140);//105 de HP originalmente
 
 
 const fireBlast = document.getElementById("move1");

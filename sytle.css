@@ -3,6 +3,7 @@
     width: 600px;
     background-image: url(image/backg.jpeg);
     background-size: cover;
+    display: inline-block;
 }
 
 .text {
@@ -128,7 +129,7 @@
     background-color: #726FB4;
     border-radius: 5px;
     padding: 10px;
-    display: none; /* Luego cambia a none*/
+    /* display: none; Luego cambia a none */
 }
 
 .texto_caja{
@@ -156,3 +157,12 @@
 .move:hover {
     box-shadow: 2px 2px 2px 2px #5d5a92;
 }
+
+#resultados {
+    top: 0px;
+    display: inline;
+    width: 729.967px;
+    float: right;
+    position: absolute;
+}
+
