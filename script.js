@@ -21,7 +21,7 @@ Damage Formula =([(2* 40 /5)+2]* 95* 120/57)/50 + 2
                = (18*95*2.1)/50 + 2
                = 73.82
 */
-const resultados = document.getElementById('resultados');
+const resultados = document.getElementById('resultados');//lugar donde se colocan resultados
 class pokemon {
     constructor(name,type,hp,atk,def,speed,){
         this.name = name;
@@ -61,6 +61,10 @@ class pokemon {
             foe.hpBar=foe.hpBar;
         }else{
             foe.hpBar = 0;
+            let paragraph = document.createElement('p')
+            paragraph.innerHTML = `${foe.name} perdió`
+            paragraph.style.backgroundColor='rgba(10, 40, 60, 0.425)'
+            resultados.appendChild(paragraph)
         }
 
         newHpBar(foe);
