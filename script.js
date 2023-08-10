@@ -71,7 +71,7 @@ class Pokemon {
         }
 
         newHpBar(foe);
-        console.log('-----------------');
+        console.log('------------------');
          //Multiple Hits
     }
 
