@@ -1,26 +1,3 @@
-/*DAMAGE FORMULA
-
-([(2*Level/5)+2]*Move BP* A/D)/50 + 2
-
-example:
-
-Charizard 
-HP: 150
-ATK : 120 
-DEF : 70
-SPE : 120
-
-Voltorb
-HP: 95
-ATK : 60 
-DEF : 57
-SPE : 140
-
-Charizard uso lanzallamas (95)
-Damage Formula =([(2* 40 /5)+2]* 95* 120/57)/50 + 2
-               = (18*95*2.1)/50 + 2
-               = 73.82
-*/
 
 class Trainer {
     constructor(name, id, pokemon, badges){
@@ -32,7 +9,7 @@ class Trainer {
 }
 
 class Pokemon {
-    constructor(name,type1,type2,ability,hp,atk,def,speed,moveSet){
+    constructor(name,type1,type2,ability,hp,atk,def,speed,tempStats,moveSet){
         //NEW CLASS ! SPECIES (Cambiar name por species )( TYPE :CHARIZARD , ABILITY : SOLARPOWER, BaseStat, MAXSTATS, Level)
         //NATURE (name, effect)
         //NAME
@@ -44,24 +21,32 @@ class Pokemon {
         this.type2 = type2;
         this.ability = ability;
         this.hp = hp;
-        this.hpReal = hp;
         this.atk = atk;
         this.def = def;
         this.speed = speed;
         this.hpBar = 100;
+        this.tempStats = tempStats;
         this.moveSet = moveSet;
     }
     attackFoe(foe,move){
         //Damage Formula
-        let dmgFormula = Math.floor(([(2* 50 /5)+2]* move.basePower* this.atk/foe.def)/50 + 2);
+        let dmgFormula = ([(2* 50 /5)+2]* move.basePower* this.atk/foe.def)/50 + 2;
         let criticalHit = move.isCriticalHit();
         let superEffectiveDmg = move.isVeryEffective(foe);
         let notEffectiveDmg = move.isNotEffective(foe);
-        let totalDmg = dmgFormula* criticalHit* superEffectiveDmg* notEffectiveDmg;
+        let totalDmg = Math.floor(dmgFormula* criticalHit* superEffectiveDmg* notEffectiveDmg);
 
-        foe.hpReal = foe.hpReal - totalDmg;
+        
+        foe.tempStats[0]= foe.tempStats[0]- totalDmg;
+        if (foe.tempStats[0] > 0){
+            foe.tempStats[0] = foe.tempStats[0];
+        }else{
+            foe.tempStats[0] = 0;
+        }
 
-        textDisplay(this,move,totalDmg,foe);
+        console.log(`${foe.name} HP: ${foe.tempStats[0]}`)
+
+        //textDisplay(this,move,totalDmg,foe);
 
         foe.hpBar = foe.hpBar - Math.floor(totalDmg * 100 / foe.hp);
         if(foe.hpBar>0){
@@ -75,11 +60,17 @@ class Pokemon {
          //Multiple Hits
     }
 
-    faint(){};
+    setTempStats(){
+        let pkmnStats = [this.hp,this.atk,this.def,this.speed];
+        this.tempStats = pkmnStats;
+    };
+
+    faint(){
+        
+    };
     evolve(){};
     levelUp(){};
     gainExp(){};
-
 }
 
 class Type {
@@ -92,7 +83,7 @@ class Type {
 }
 
 class Move {
-    constructor(name, basePower, accuracy, type, effect, category, pps ) {
+    constructor(name, basePower, accuracy, type, effect, category, pps) {
         this.name = name;
         this.basePower = basePower;
         this.accuracy = accuracy;
@@ -145,7 +136,9 @@ class Move {
         return notEffective;
     };
 
-    isMultipleHit(){};
+    isMultipleHit(maxHits, fixedOrRandom){
+
+    };
     //missedAttack(){};
     stabMove(){};
     totalDmg(){}
@@ -168,8 +161,8 @@ const textDisplay = function(attacker,move,dmg,defender){
     battleText.textContent = `${attacker.name} used ${move.name} on ${defender.name} `;
     console.log(`Damage cause by this move : ${dmg}`);
     battleText1.textContent = `Damage cause by this move : ${dmg}`;
-    console.log(`HP remaining: ${defender.hpReal}/${defender.hp}`);
-    battleText2.textContent = `HP remaining: ${defender.hpReal}/${defender.hp}`;
+    console.log(`HP remaining: ${defender.tempStats[0]}/${defender.hp}`);
+    battleText2.textContent = `HP remaining: ${defender.tempStats[0]}/${defender.hp}`;
     console.log(`${defender.name} lost ${Math.floor(dmg * 100 / defender.hp)}% of its total health`);
     battleText3.textContent = `${defender.name} lost ${Math.floor(dmg * 100 / defender.hp)}% of its total health`;
 }
@@ -191,6 +184,17 @@ const inactiveBattle = function(){
     scriptBox.style.display = 'none';
 }
 
+const speedChecker = function(){}
+
+/*BATTLE DESCRIPTION
+- Set Temporal Stats (✓)
+- Check the speed of both pokemon to choose the first attacker
+- 1st attacker turn ( print battle info)
+- Check if 2nd attacker has fainted or not
+    a) If it has fainted , end of battle
+    b) If it hasnt, go to 2nd attacker turn
+- 2nd attacker ()
+*/
 const battle = function(){
     
     activeBattle();
@@ -199,11 +203,22 @@ const battle = function(){
     const randomMove = jolteon.moveSet[randomMoveId];
 
     setTimeout(jolteon.attackFoe(charizard, randomMove),2000);
-    setTimeout(playerTurn.bind(this, charizard, jolteon),4000);
-
-    setTimeout(inactiveBattle, 7000);
+    if(charizard.tempStats[0] <= 0){
+        battleText.textContent = `Battle has ended:`;
+        battleText1.textContent = `YOU LOST 🤬`;
+    }else{
+        setTimeout(playerTurn.bind(this, charizard, jolteon),4000);
+        console.log(`jolteon hp : ${jolteon.tempStats[0]}`);
+    } 
+    if(jolteon.tempStats[0] <= 0){
+        battleText.textContent = `Battle has ended:`;
+        battleText1.textContent = `YOU WON! 🥳`;   
+    }else{
+        setTimeout(inactiveBattle, 7000);
+    }
 }
 
+let tempStats = [0,0,0,0];
 /*TRAINER LIST
 
 TROPIUS = new Pokemon('Charizard','Fire','ninguna',150,100,70,120);
@@ -272,15 +287,16 @@ const rollOut = new Move('Rollout', 30, 100, rock, undefined, undefined, 15);
 const bodySlam = new Move('Body Slam', 85, 100, normal, undefined, undefined, 15);
 
 //POKEMON LIST
-// Class Pokemon (name,type1,type2,ability,hp,atk,def,speed,moveSet)
-const charizard = new Pokemon('Charizard',fire,flying,undefined,185,136,130,152,[dragonPulse,fireBlast,hurricane,flameThrower]);
-const jolteon = new Pokemon('Jolteon',electric,emptyType,undefined,172,117,112,182,[thunderBolt,voltSwitch,pinMissile,doubleKick]);
+// Class Pokemon (name,type1,type2,ability,hp,atk,def,speed,tempStats,moveSet
+const charizard = new Pokemon('Charizard',fire,flying,undefined,185,136,130,152,tempStats,[dragonPulse,fireBlast,hurricane,flameThrower]);
+const jolteon = new Pokemon('Jolteon',electric,emptyType,undefined,172,117,112,182,tempStats,[thunderBolt,voltSwitch,pinMissile,doubleKick]);
+
+charizard.setTempStats();
+jolteon.setTempStats();
+
 //DONPHAN
 //Tropius
 //Jolteon
-
-let playerPkmnStats = [0,0,0,0];
-let cpuPkmnStats = [0,0,0,0];
 
 const playerMove1 = document.getElementById("move0");
 const playerMove2 = document.getElementById("move1");
@@ -303,4 +319,5 @@ playerMove2.addEventListener('click',battle);
 playerMove3.addEventListener('click',battle);
 playerMove4.addEventListener('click',battle);
 
-doubleKick.isNotEffective(charizard);
+
+
